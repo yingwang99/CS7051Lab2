@@ -1,5 +1,8 @@
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 
  
 public class ServerThread extends Thread {
@@ -27,16 +30,28 @@ public class ServerThread extends Thread {
         	  if((name = br.readLine()) != null){
         		 
         		  if(name.equalsIgnoreCase("KILL_SERVICE\\n")){
-  	            	System.out.println("Client " + sock.getInetAddress() + " left");
-  	            	break;
+        			  //sock.close();
+        			  ArrayList<Socket> sockets = MyServer.getListners();
+        			  for(Socket socket:sockets){
+        				  if(!socket.equals(sock) && !socket.isClosed()){
+        					  socket.close();
+        				  }
+        			  }
+					  MyServer.getExecutorService().shutdown();
+					  MyServer.getS().close();
+					  MyServer.setDown(true);
+					  sock.close();
+					  break;
+        			  
   	            	}
-	                pw.println(name + "\n" + "IP:" + localIp + "\n" + "PORT: " + 5432 + "\nStudentId: 16308222\n" + "==END==");
+	                pw.println(name + "\n" + "IP:" + localIp + "\n" + "Port: " + 54321 + "\nStudentId: 16308222\n" + "==END==");
 	                pw.flush();
             	}     
 	        }
+	        
             br.close();
             pw.close();
-            sock.close();
+            //sock.close();
         }
         catch(IOException e)
         {

@@ -13,8 +13,8 @@ public class MyClient
 			
 			try
 			{ 
-				s = new Socket("10.62.0.8", 5432); 
-				//s = new Socket("localhost", 5432); 
+				s = new Socket("10.62.0.8", 54321); 
+				//s = new Socket("localhost", 54321); 
 				
 				/*OutputStream out = s.getOutputStream(); 
 				DataOutputStream dout = new DataOutputStream(out);
@@ -32,7 +32,7 @@ public class MyClient
 					 if(name.equalsIgnoreCase("KILL_SERVICE\\n") ){
 						 pw.println("KILL_SERVICE\\n");
 						 pw.flush();
-						 System.out.println("byebye");
+				
 						 break;
 					 }else{
 						 pw.println("HELO " + name + "\n");
