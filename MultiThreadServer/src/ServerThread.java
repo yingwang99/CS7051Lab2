@@ -31,16 +31,20 @@ public class ServerThread extends Thread {
         		 
         		  if(name.equalsIgnoreCase("KILL_SERVICE\\n")){
         			  //sock.close();
-        			  ArrayList<Socket> sockets = MyServer.getListners();
-        			  for(Socket socket:sockets){
-        				  if(!socket.equals(sock) && !socket.isClosed()){
-        					  socket.close();
+        			  ArrayList<ServerThread> serverThreads = MyServer.getListners();
+        			  
+        			  for(ServerThread t:serverThreads){
+        				
+        				  if(!t.equals(this) && !t.isAlive()){
+        					   t.interrupt();
         				  }
         			  }
+					  
 					  MyServer.getExecutorService().shutdown();
+					  
 					  MyServer.getS().close();
-					  MyServer.setDown(true);
 					  sock.close();
+					  
 					  break;
         			  
   	            	}
@@ -75,4 +79,6 @@ public class ServerThread extends Thread {
         InputStream socketIn=socket.getInputStream();
         return new BufferedReader(new InputStreamReader(socketIn));
     }
+	
+    
 }

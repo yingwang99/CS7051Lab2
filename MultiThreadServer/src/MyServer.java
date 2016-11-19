@@ -2,22 +2,25 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors; 
+import java.util.concurrent.Executors;
+
+import javax.sound.midi.Soundbank; 
+
 public class MyServer {
 	
 	private static ExecutorService executorService = null;
 	private static ServerSocket s = null;
-	private static ArrayList<Socket> listners = null;
+	private static ArrayList<ServerThread> listners = null;
 	private static boolean isDown = false;
 	public MyServer(){
 		
    	    final int POOL_SIZE=10;
-   	    listners = new ArrayList<Socket>();
+   	    listners = new ArrayList<ServerThread>();
         
 	    
         try{
 	        executorService=Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*POOL_SIZE);
-            s= new ServerSocket(54321);
+            s = new ServerSocket(54321);
         }
         catch(IOException e)
         {
@@ -28,33 +31,24 @@ public class MyServer {
         int i = 1;
         while(true)
         {
-        	if(isDown == true){
-        		break;
-        	}
-            
+        	     
             try{
                 Socket cs = s.accept();
-                executorService.execute(new ServerThread(cs));
-                listners.add(cs);
+                ServerThread serverThread = new ServerThread(cs);
+                executorService.execute(serverThread);
+                listners.add(serverThread);
                 //new ServerThread(cs).start();
                 System.out.println("Client number: " + i);
                 i++;
-                
-               
+                   
             }
             catch(IOException e)
             {
-                //System.out.println(e);
-                try {
-                	if(!s.isClosed()){
-                		s.close();
-                	}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                System.out.println(e);
+                
             }
         }
+        
     }
 	
 	
@@ -64,14 +58,9 @@ public class MyServer {
 		return executorService;
 	}
 
-
-
-
 	public static void setExecutorService(ExecutorService executorService) {
 		MyServer.executorService = executorService;
 	}
-
-
 
 
 	public static ServerSocket getS() {
@@ -88,33 +77,16 @@ public class MyServer {
 
 
 
-	public static ArrayList<Socket> getListners() {
+	public static ArrayList<ServerThread> getListners() {
 		return listners;
 	}
 
 
 
 
-	public static void setListners(ArrayList<Socket> listners) {
+	public static void setListners(ArrayList<ServerThread> listners) {
 		MyServer.listners = listners;
 	}
-
-
-
-
-	public static boolean isDown() {
-		return isDown;
-	}
-
-
-
-
-	public static void setDown(boolean isDown) {
-		MyServer.isDown = isDown;
-	}
-
-
-
 
 	public static void main(String[] args) {
         // TODO Auto-generated method stub
