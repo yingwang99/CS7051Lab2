@@ -44,7 +44,7 @@ public class MyServer {
             }
             catch(IOException e)
             {
-                System.out.println(e);
+                //System.out.println(e);
                 
             }
         }
