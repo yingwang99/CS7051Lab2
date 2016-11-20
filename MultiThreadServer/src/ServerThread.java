@@ -29,27 +29,19 @@ public class ServerThread extends Thread {
 	        while(true){        	
         	  if((name = br.readLine()) != null){
         		 
-        		  if(name.equalsIgnoreCase("KILL_SERVICE\\n")){
-        			  //sock.close();
-        			  ArrayList<ServerThread> serverThreads = MyServer.getListners();
-        			  
-        			  for(ServerThread t:serverThreads){
-        				
-        				  if(!t.equals(this) && !t.isAlive()){
-        					   t.interrupt();
-        				  }
-        			  }
+        		  if(name.equalsIgnoreCase("KILL_SERVICE")){
 					  
-					  MyServer.getExecutorService().shutdown();
-					  
-					  MyServer.getS().close();
+					  MyServer.setDown(true);
+					  new Socket("localhost", 54321);
 					  sock.close();
+					  
 					  
 					  break;
         			  
   	            	}
-	                pw.println(name + "\n" + "IP:" + localIp + "\n" + "Port: " + 54321 + "\nStudentId: 16308222\n" + "==END==");
+	                pw.println(name + "\n" + "IP:" + localIp + "\n" + "Port: " + 54321 + "\n" + "StudentId: 16308222");
 	                pw.flush();
+	                br.readLine();
             	}     
 	        }
 	        

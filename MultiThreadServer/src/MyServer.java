@@ -12,7 +12,7 @@ public class MyServer {
 	private static ServerSocket s = null;
 	private static ArrayList<ServerThread> listners = null;
 	private static boolean isDown = false;
-	public MyServer(){
+	public MyServer() throws IOException{
 		
    	    final int POOL_SIZE=10;
    	    listners = new ArrayList<ServerThread>();
@@ -31,30 +31,46 @@ public class MyServer {
         int i = 1;
         while(true)
         {
-        	     
-            try{
+          try{
+        	  	
                 Socket cs = s.accept();
+                if(isDown == true) {
+            		System.out.println();
+            		break;
+            	}
                 ServerThread serverThread = new ServerThread(cs);
                 executorService.execute(serverThread);
                 listners.add(serverThread);
                 //new ServerThread(cs).start();
                 System.out.println("Client number: " + i);
                 i++;
-                   
+                
+                 
             }
             catch(IOException e)
             {
-                System.out.println(e);
-                
+                //System.out.println(e);
+                if(s != null){
+                	s.close();
+                }
             }
         }
-        
-    }
-	
-	
+        executorService.shutdown();
+        s.close();
+	}
 	
 	 
-    public static ExecutorService getExecutorService() {
+    public static boolean isDown() {
+		return isDown;
+	}
+
+
+	public static void setDown(boolean isDown) {
+		MyServer.isDown = isDown;
+	}
+
+
+	public static ExecutorService getExecutorService() {
 		return executorService;
 	}
 
@@ -63,32 +79,7 @@ public class MyServer {
 	}
 
 
-	public static ServerSocket getS() {
-		return s;
-	}
-
-
-
-
-	public static void setS(ServerSocket s) {
-		MyServer.s = s;
-	}
-
-
-
-
-	public static ArrayList<ServerThread> getListners() {
-		return listners;
-	}
-
-
-
-
-	public static void setListners(ArrayList<ServerThread> listners) {
-		MyServer.listners = listners;
-	}
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
         // TODO Auto-generated method stub
     	new MyServer();
     }

@@ -13,8 +13,8 @@ public class MyClient
 			
 			try
 			{ 
-				s = new Socket("10.62.0.8", 54321); 
-				//s = new Socket("localhost", 54321); 
+				//s = new Socket("10.62.0.8", 54321); 
+				s = new Socket("localhost", 54321); 
 				
 				/*OutputStream out = s.getOutputStream(); 
 				DataOutputStream dout = new DataOutputStream(out);
@@ -29,17 +29,18 @@ public class MyClient
             	while(true){
 					 System.out.println("Please input your name");
 					 name = sc.nextLine();
-					 if(name.equalsIgnoreCase("KILL_SERVICE\\n") ){
-						 pw.println("KILL_SERVICE\\n");
+					 if(name.equalsIgnoreCase("KILL_SERVICE") ){
+						 pw.println("KILL_SERVICE\n");
 						 pw.flush();
 				
+						 
 						 break;
 					 }else{
 						 pw.println("HELO " + name + "\n");
 						 pw.flush();
 						 String st = "";
-						 while(!"==END==".equals(st = br.readLine())) {
-							System.out.println(st);
+						 for(int i = 0; i < 4; i++) {
+							System.out.println(br.readLine());
 						 }
 						 
 					 }
