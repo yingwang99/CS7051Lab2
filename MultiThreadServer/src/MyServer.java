@@ -50,9 +50,13 @@ public class MyServer {
             catch(IOException e)
             {
                 //System.out.println(e);
+<<<<<<< HEAD
                 if(s != null){
                 	s.close();
                 }
+=======
+                
+>>>>>>> df9ff9c0125a5e92e6d4a894abb76f82839fe36e
             }
         }
         executorService.shutdown();
