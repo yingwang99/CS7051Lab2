@@ -19,7 +19,7 @@ public class MyServer {
         
 	    
         try{
-	        executorService=Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*POOL_SIZE);
+	    executorService=Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*POOL_SIZE);
             s = new ServerSocket(54321);
         }
         catch(IOException e)
@@ -50,13 +50,9 @@ public class MyServer {
             catch(IOException e)
             {
                 //System.out.println(e);
-<<<<<<< HEAD
                 if(s != null){
                 	s.close();
                 }
-=======
-                
->>>>>>> df9ff9c0125a5e92e6d4a894abb76f82839fe36e
             }
         }
         executorService.shutdown();
